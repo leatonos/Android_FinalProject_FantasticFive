@@ -71,6 +71,12 @@ public class Note {
         return category;
     }
 
+    public String getImage(){return image;}
+
+    public String getAudio(){return audio;}
+
+    public String getTime(){return time;}
+
     public double getLatitude() {
         return latitude;
     }
@@ -97,7 +103,7 @@ public class Note {
 
     public void setAudio(String audio){this.audio = audio;}
 
-    
+
 
     public void setTime(@NonNull String time) {
         this.time = time;
