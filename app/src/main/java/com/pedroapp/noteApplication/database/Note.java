@@ -52,6 +52,7 @@ public class Note {
         this.longitude = longitude;
     }
 
+    //Gets
     public int getId() {
         return id;
     }
@@ -83,6 +84,8 @@ public class Note {
 
     public double getLongitude() {return longitude;}
 
+
+    //Sets
     public void setId(int id) {
         this.id = id;
     }
@@ -102,8 +105,6 @@ public class Note {
     public void setImage(String image){this.image = image;}
 
     public void setAudio(String audio){this.audio = audio;}
-
-
 
     public void setTime(@NonNull String time) {
         this.time = time;

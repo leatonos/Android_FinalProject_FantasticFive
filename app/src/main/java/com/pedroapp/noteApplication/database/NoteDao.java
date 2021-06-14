@@ -6,10 +6,11 @@ import androidx.room.Query;
 
 import java.util.List;
 
+@Dao
 public interface NoteDao {
 
     @Insert
-    void insertEmployee(Note note);
+    void insertNote(Note note);
 
     @Query("DELETE FROM note")
     void deleteAllNotes();
@@ -17,10 +18,8 @@ public interface NoteDao {
     @Query("DELETE FROM note WHERE id = :id" )
     int deleteNote(int id);
 
-    /*
-    @Query("UPDATE note SET name = :name, department = :department, salary = :salary WHERE id = :id")
-    int updateEmployee(int id, String name, String department, double salary);
-    */
+    @Query("UPDATE note SET title = :title, description = :description, category = :category  WHERE id = :id")
+    int updateNote(int id, String title, String description, String category);
 
     @Query("SELECT * FROM note ORDER BY title")
     List<Note> getAllNotes();

@@ -20,10 +20,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedpreferences;
-    List<String> loadedCategories;
+    ArrayList<String> loadedCategories;
     ListView listViewCategories;
     CategoryAdapter categoryAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +31,13 @@ public class MainActivity extends AppCompatActivity {
         listViewCategories = findViewById(R.id.categories_lv);
 
         sharedpreferences = getSharedPreferences("Categories", Context.MODE_PRIVATE);
-        String categories = sharedpreferences.getString("Cat_list", "My Dreams, My Memories, Events");
+        String categories = sharedpreferences.getString("Cat_list", "My Dreams,My Memories,Events");
 
         Log.d("Test!!", "loadCategories: "+categories);
         loadedCategories = new ArrayList<String>(Arrays.asList(categories.split(",")));
         categoryAdapter = new CategoryAdapter(this,R.layout.category_list_item,loadedCategories);
 
         listViewCategories.setAdapter(categoryAdapter);
-
-        Log.d("Test!!", "loadCategories: "+loadedCategories.toString());
-        Log.d("Test!!", "loadCategories: "+loadedCategories.size());
 
     }
 
@@ -54,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         categoryAdapter.notifyDataSetChanged();
-        Log.d("Test!!", "loadCategories: "+loadedCategories.toString());
-        Log.d("Test!!", "loadCategories: "+loadedCategories.size());
+
     }
 
 }

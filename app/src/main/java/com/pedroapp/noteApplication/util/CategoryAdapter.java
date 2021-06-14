@@ -32,10 +32,10 @@ public class CategoryAdapter extends ArrayAdapter {
     int layoutRes;
 
     SharedPreferences sharedpreferences;
-    List<String> loadedCategories;
+    ArrayList<String> loadedCategories;
 
 
-    public CategoryAdapter(@NonNull Context context, int resource, List<String> loadedCategories) {
+    public CategoryAdapter(@NonNull Context context, int resource, ArrayList<String> loadedCategories) {
 
         super(context, resource, loadedCategories);
         this.loadedCategories = loadedCategories;
@@ -74,13 +74,20 @@ public class CategoryAdapter extends ArrayAdapter {
                     public void onClick(DialogInterface dialog, int which) {
 
                         loadedCategories.remove(position);
-                        String finalresult = loadedCategories.toString();
+                        //String finalresult = loadedCategories.toString();
+
+                        String finalResult = "";
+                            for (String cat : loadedCategories){
+                                finalResult += ","+cat;
+                            }
+                            finalResult = finalResult.substring(1);
+
 
                         SharedPreferences sharedpreferences;
                         sharedpreferences = context.getSharedPreferences("Categories", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedpreferences.edit();
 
-                        editor.putString("Cat_list",finalresult);
+                        editor.putString("Cat_list",finalResult);
                         editor.commit();
 
                         notifyDataSetChanged();
