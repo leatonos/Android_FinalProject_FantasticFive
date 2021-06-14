@@ -18,7 +18,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.pedroapp.noteApplication.AddCategory;
 import com.pedroapp.noteApplication.Category;
+import com.pedroapp.noteApplication.MainActivity;
 import com.pedroapp.noteApplication.R;
 
 import java.util.ArrayList;
@@ -58,6 +60,9 @@ public class CategoryAdapter extends ArrayAdapter {
            @Override
            public void onClick(View v) {
                Log.d("Category Clicked!!!", "onClick: "+loadedCategories.get(position));
+               Intent i = new Intent(context, Category.class);
+               CategoryChosen.chosenCategory = loadedCategories.get(position);
+               context.startActivity(i);
            }
        });
         v.findViewById(R.id.deleteBtn).setOnClickListener(new View.OnClickListener() {
