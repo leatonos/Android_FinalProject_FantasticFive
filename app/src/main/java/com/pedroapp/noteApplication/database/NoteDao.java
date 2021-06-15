@@ -21,7 +21,7 @@ public interface NoteDao {
     @Query("UPDATE note SET title = :title, description = :description, category = :category  WHERE id = :id")
     int updateNote(int id, String title, String description, String category);
 
-    @Query("SELECT * FROM note ORDER BY title")
-    List<Note> getAllNotes();
+    @Query("SELECT * FROM note WHERE category =:chosenCategory  ORDER BY title")
+    List<Note> getAllNotes(String chosenCategory);
 
 }

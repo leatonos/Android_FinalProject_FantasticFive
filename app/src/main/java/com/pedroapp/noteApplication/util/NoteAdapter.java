@@ -158,7 +158,9 @@ public class NoteAdapter extends ArrayAdapter {
 
     private void loadNotes() {
 
-        noteList = noteRoomDb.noteDao().getAllNotes();
+        String chosen = CategoryChosen.chosenCategory;
+
+        noteList = noteRoomDb.noteDao().getAllNotes(chosen);
         notifyDataSetChanged();
 
     }
