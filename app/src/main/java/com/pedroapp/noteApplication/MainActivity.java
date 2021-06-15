@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         sharedpreferences = getSharedPreferences("Categories", Context.MODE_PRIVATE);
         String categories = sharedpreferences.getString("Cat_list", "My Dreams,My Memories,Events");
-
-        Log.d("Test!!", "loadCategories: "+categories);
         loadedCategories = new ArrayList<String>(Arrays.asList(categories.split(",")));
         categoryAdapter = new CategoryAdapter(this,R.layout.category_list_item,loadedCategories);
 

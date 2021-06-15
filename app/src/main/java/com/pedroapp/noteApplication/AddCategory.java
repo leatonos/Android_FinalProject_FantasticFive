@@ -29,7 +29,7 @@ public class AddCategory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
 
-        newCategoryName = findViewById(R.id.editTextCatName);
+        newCategoryName = findViewById(R.id.editTextNewNoteTitle);
 
         sharedpreferences = getSharedPreferences("Categories", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();

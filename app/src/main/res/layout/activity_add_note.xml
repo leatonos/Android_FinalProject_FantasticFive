@@ -24,7 +24,7 @@
         android:text="Title:" />
 
     <EditText
-        android:id="@+id/editTextCatName"
+        android:id="@+id/editTextNewNoteTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -39,7 +39,7 @@
         android:text="Description" />
 
     <EditText
-        android:id="@+id/editTextTextMultiLine"
+        android:id="@+id/editTextNewNoteDescription"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_marginHorizontal="20dp"
@@ -55,9 +55,9 @@
         android:text="Category" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/newCategorySpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginHorizontal="20dp" />
 
     <Button

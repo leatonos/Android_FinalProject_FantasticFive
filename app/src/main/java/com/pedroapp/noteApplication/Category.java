@@ -2,6 +2,7 @@ package com.pedroapp.noteApplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -25,5 +26,9 @@ public class Category extends AppCompatActivity {
     }
 
     public void goToAddNote(View view) {
+
+        Intent i = new Intent(Category.this, AddNote.class);
+        startActivity(i);
+
     }
 }
