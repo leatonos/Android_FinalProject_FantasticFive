@@ -7,7 +7,7 @@ public class Note {
     String time;
     Double latitude,longitude;
 
-    public Note(int id, String title,String description, String category, String image, String audio,String time, Double latitude, Double longitude){
+    public Note(int id, String title,String description, String category, String image, String audio,String time, double latitude, double longitude){
 
         this.id = id;
         this.title = title;

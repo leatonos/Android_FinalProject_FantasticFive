@@ -41,7 +41,7 @@ public class Note {
     @ColumnInfo(name = "longitude")
     private double longitude;
 
-    public Note(@NonNull String title, @NonNull String description, @NonNull String category, String image, String audio, String time, Double latitude, Double longitude) {
+    public Note(@NonNull String title, @NonNull String description, @NonNull String category, String image, String audio, String time, double latitude, double longitude) {
         this.title = title;
         this.description = description;
         this.category = category;

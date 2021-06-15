@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedroapp.noteApplication.util.CategoryChosen;
@@ -11,6 +12,8 @@ import com.pedroapp.noteApplication.util.CategoryChosen;
 public class Category extends AppCompatActivity {
 
     TextView pageTitle;
+    ListView noteListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +22,6 @@ public class Category extends AppCompatActivity {
 
         pageTitle = findViewById(R.id.categoryTitle);
         pageTitle.setText(CategoryChosen.chosenCategory);
-
     }
 
     public void goToAddNote(View view) {
