@@ -31,14 +31,19 @@
         android:inputType="textPersonName"
         android:text="Description" />
 
-    <EditText
-        android:id="@+id/editTextNoteCategory"
+    <TextView
+        android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Category" />
+        android:text="Category:"
+        android:textSize="22sp" />
+
+    <Spinner
+        android:id="@+id/spinnerEditCategory"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginHorizontal="25dp" />
 
     <Button
         android:id="@+id/confirmEditBtn"

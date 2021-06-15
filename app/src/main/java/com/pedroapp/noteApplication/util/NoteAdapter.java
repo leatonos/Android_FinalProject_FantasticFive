@@ -4,12 +4,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ import com.pedroapp.noteApplication.database.Note;
 import com.pedroapp.noteApplication.database.NoteRoomDb;
 import com.pedroapp.noteApplication.util.DatabaseHelper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NoteAdapter extends ArrayAdapter {
@@ -78,20 +82,31 @@ public class NoteAdapter extends ArrayAdapter {
                         final AlertDialog alertDialog = builder.create();
                         alertDialog.show();
 
+                        SharedPreferences sharedpreferences;
+                        ArrayList<String> loadedCategories;
+                        ArrayAdapter<String> spinnerArrayAdapter;
+
+                        sharedpreferences = context.getSharedPreferences("Categories", Context.MODE_PRIVATE);
+                        String categories = sharedpreferences.getString("Cat_list", "My Dreams,My Memories,Events");
+                        loadedCategories = new ArrayList<String>(Arrays.asList(categories.split(",")));
+
                         final EditText et_noteTitle = view.findViewById(R.id.editTextNoteTitle);
                         final EditText et_noteDescription = view.findViewById(R.id.editTextNoteDescription);
-                        final EditText et_noteCategory = view.findViewById(R.id.editTextNoteCategory);
+                        final Spinner categorySelectSpin = view.findViewById(R.id.spinnerEditCategory);
+
+                        spinnerArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item,loadedCategories);
+                        categorySelectSpin.setAdapter(spinnerArrayAdapter);
 
                         et_noteTitle.setText(note.getTitle());
                         et_noteDescription.setText(note.getDescription());
-                        et_noteCategory.setText(note.getCategory());
+
 
                         view.findViewById(R.id.confirmEditBtn).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 String title = et_noteTitle.getText().toString().trim();
                                 String description = et_noteDescription.getText().toString().trim();
-                                String category = et_noteCategory.getText().toString().trim();
+                                String category = categorySelectSpin.getSelectedItem().toString().trim();
 
                                 if (title.isEmpty()) {
                                     et_noteTitle.setError("This field cannot be empty");
@@ -101,11 +116,6 @@ public class NoteAdapter extends ArrayAdapter {
                                 if (description.isEmpty()) {
                                     et_noteDescription.setError("This field cannot be empty");
                                     et_noteDescription.requestFocus();
-                                    return;
-                                }
-                                if (category.isEmpty()) {
-                                    et_noteCategory.setError("This field cannot be empty");
-                                    et_noteCategory.requestFocus();
                                     return;
                                 }
 

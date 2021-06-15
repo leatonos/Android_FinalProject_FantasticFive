@@ -16,8 +16,11 @@ import com.pedroapp.noteApplication.database.Note;
 import com.pedroapp.noteApplication.database.NoteRoomDb;
 import com.pedroapp.noteApplication.util.DatabaseHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddNote extends AppCompatActivity {
 
@@ -55,6 +58,7 @@ public class AddNote extends AppCompatActivity {
 
     }
 
+
     public void createNewNote(View view) {
 
         String textNewTitle = newTitle.getText().toString().trim();
@@ -72,7 +76,9 @@ public class AddNote extends AppCompatActivity {
             return;
         }
 
-        Note note = new Note(textNewTitle,textNewDescription,selectedCategory,"","","",0.0,0.0);
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+        Note note = new Note(textNewTitle,textNewDescription,selectedCategory,"","",currentDate,0.0,0.0);
         noteRoomDb.noteDao().insertNote(note);
 
         Toast.makeText(AddNote.this,"Note Added",Toast.LENGTH_SHORT).show();
