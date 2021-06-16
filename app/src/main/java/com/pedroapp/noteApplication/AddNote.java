@@ -73,7 +73,7 @@ public class AddNote extends AppCompatActivity {
     OutputStream outputStream;
     String notePhotoPath;
 
-    EditText newTitle,newDescription;
+    EditText newTitle, newDescription;
 
     //Location Code Started
 
@@ -114,7 +114,7 @@ public class AddNote extends AppCompatActivity {
         notePhoto = findViewById(R.id.imageNewNote);
 
         //Insert the Categories in the Spinner
-        spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,loadedCategories);
+        spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, loadedCategories);
         categorySelectSpin.setAdapter(spinnerArrayAdapter);
 
         noteRoomDb = NoteRoomDb.getInstance(this);
@@ -151,7 +151,7 @@ public class AddNote extends AppCompatActivity {
 
     private List<String> permissionsToRequest(List<String> permissions) {
         ArrayList<String> results = new ArrayList<>();
-        for (String perm: permissions) {
+        for (String perm : permissions) {
             if (!hasPermission(perm))
                 results.add(perm);
         }
@@ -225,6 +225,16 @@ public class AddNote extends AppCompatActivity {
             }
         };
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
