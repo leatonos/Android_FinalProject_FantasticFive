@@ -3,10 +3,13 @@ package com.pedroapp.noteApplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import java.util.List;
 public class NoteActivity extends AppCompatActivity {
 
     TextView TVtitle,TVdate,TVFinalDescription,TVnoteAddress;
+    ImageView notePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +32,7 @@ public class NoteActivity extends AppCompatActivity {
         TVdate = findViewById(R.id.noteDate);
         TVFinalDescription = findViewById(R.id.noteFinalDescription);
         TVnoteAddress = findViewById(R.id.noteAddress);
-
-
+        notePhoto = findViewById(R.id.noteImageView);
 
         double latitude = ChosenOptions.chosenNote.getLatitude();
         double longitude = ChosenOptions.chosenNote.getLongitude();
@@ -37,6 +40,7 @@ public class NoteActivity extends AppCompatActivity {
         String noteTitle = ChosenOptions.chosenNote.getTitle();
         String noteDate = ChosenOptions.chosenNote.getTime();
         String noteDescription = ChosenOptions.chosenNote.getDescription();
+        String notePhotoPath = ChosenOptions.chosenNote.getImage();
 
         //set Address on the TextView
         getAddress(latitude,longitude);
@@ -45,6 +49,11 @@ public class NoteActivity extends AppCompatActivity {
         TVtitle.setText(noteTitle);
         TVdate.setText(noteDate);
         TVFinalDescription.setText(noteDescription);
+
+        //finds the image on the InternalStorage and put on the ImageView
+        Bitmap bitmap = BitmapFactory.decodeFile(notePhotoPath);
+        notePhoto.setImageBitmap(bitmap);
+
 
     }
 

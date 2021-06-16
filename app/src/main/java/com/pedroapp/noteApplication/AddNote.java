@@ -1,23 +1,35 @@
 package com.pedroapp.noteApplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,6 +46,11 @@ import com.pedroapp.noteApplication.database.NoteRoomDb;
 import com.pedroapp.noteApplication.util.DatabaseHelper;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +60,7 @@ import java.util.Locale;
 
 public class AddNote extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 3;
     DatabaseHelper sqLiteDatabase;
     private NoteRoomDb noteRoomDb;
 
@@ -50,6 +68,10 @@ public class AddNote extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     ArrayList<String> loadedCategories;
     ArrayAdapter<String> spinnerArrayAdapter;
+    ImageView notePhoto;
+
+    OutputStream outputStream;
+    String notePhotoPath;
 
     EditText newTitle,newDescription;
 
@@ -85,10 +107,11 @@ public class AddNote extends AppCompatActivity {
         String categories = sharedpreferences.getString("Cat_list", "My Dreams,My Memories,Events");
         loadedCategories = new ArrayList<String>(Arrays.asList(categories.split(",")));
 
-        //Put ids on the TextsFields and Spinner
+        //Put ids on the TextsFields, Spinner and ImageView
         categorySelectSpin = findViewById(R.id.newCategorySpinner);
         newTitle = findViewById(R.id.editTextNewNoteTitle);
         newDescription = findViewById(R.id.editTextNewNoteDescription);
+        notePhoto = findViewById(R.id.imageNewNote);
 
         //Insert the Categories in the Spinner
         spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,loadedCategories);
@@ -99,15 +122,30 @@ public class AddNote extends AppCompatActivity {
         // instantiate the fusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // add permissions
+        // add permissions for Location
 
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
 
+
+        //asks permitions for Location
         permissionsToRequest = permissionsToRequest(permissions);
         if (permissionsToRequest.size() > 0) {
             requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), REQUEST_CODE);
         }
+
+        //Ask permition for Camera
+
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},2);
+        }
+
+        //Ask permition for Internal Storage
+
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},4);
+        }
+
 
     }
 
@@ -221,8 +259,85 @@ public class AddNote extends AppCompatActivity {
     }
 
 
+    //Taking Photos
 
-    public void createNewNote(View view) {
+    public void takePhoto(View view) {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
+        } else {
+            notePhoto.setVisibility(View.VISIBLE);
+            openCamera();
+        }
+
+    }
+
+    private void openCamera() {
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE){
+          Bundle extras = data.getExtras();
+            Bitmap imageTaken = (Bitmap) extras.get("data");
+            notePhoto.setVisibility(View.VISIBLE);
+            notePhoto.setImageBitmap(imageTaken);
+        }else{
+            notePhoto.setVisibility(View.GONE);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    public void savePhoto() {
+
+        File dir = new File(Environment.getExternalStorageDirectory(),"SaveImage");
+
+        if (!dir.exists()){
+            dir.mkdir();
+        }
+
+
+        BitmapDrawable drawable = (BitmapDrawable) notePhoto.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+
+        File file = new File(dir,System.currentTimeMillis()+".png");
+        try {
+            outputStream = new FileOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+
+
+
+        try {
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        notePhotoPath = file.getAbsolutePath();
+
+    }
+
+
+    public void createNewNote(View view){
 
         String textNewTitle = newTitle.getText().toString().trim();
         String textNewDescription = newDescription.getText().toString().trim();
@@ -241,10 +356,11 @@ public class AddNote extends AppCompatActivity {
 
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
-        Note note = new Note(textNewTitle,textNewDescription,selectedCategory,"","",currentDate,noteLatitute,noteLongitude);
+        savePhoto();
+
+        Note note = new Note(textNewTitle,textNewDescription,selectedCategory,notePhotoPath,"",currentDate,noteLatitute,noteLongitude);
         noteRoomDb.noteDao().insertNote(note);
 
-        Toast.makeText(AddNote.this,"Note Added",Toast.LENGTH_SHORT).show();
         clearFields();
     }
 
@@ -258,5 +374,6 @@ public class AddNote extends AppCompatActivity {
         newTitle.setText("");
         newDescription.setText("");
     }
+
 
 }

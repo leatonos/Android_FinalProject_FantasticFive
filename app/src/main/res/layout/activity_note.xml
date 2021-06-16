@@ -25,10 +25,10 @@
         android:text="Date" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="279dp"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        android:id="@+id/noteImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/noteFinalDescription"
