@@ -22,7 +22,6 @@ import com.pedroapp.noteApplication.NoteActivity;
 import com.pedroapp.noteApplication.R;
 import com.pedroapp.noteApplication.database.Note;
 import com.pedroapp.noteApplication.database.NoteRoomDb;
-import com.pedroapp.noteApplication.util.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +62,9 @@ public class NoteAdapter extends ArrayAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ChosenOptions.chosenNote = note;
+
                 Intent i = new Intent(context, NoteActivity.class);
                 context.startActivity(i);
             }
@@ -157,6 +159,7 @@ public class NoteAdapter extends ArrayAdapter {
                 alertDialog.show();
             }
         });
+
         Log.d(TAG, "getView: " + getCount());
         return v;
     }
@@ -168,7 +171,7 @@ public class NoteAdapter extends ArrayAdapter {
 
     private void loadNotes() {
 
-        String chosen = CategoryChosen.chosenCategory;
+        String chosen = ChosenOptions.chosenCategory;
 
         noteList = noteRoomDb.noteDao().getAllNotes(chosen);
         notifyDataSetChanged();

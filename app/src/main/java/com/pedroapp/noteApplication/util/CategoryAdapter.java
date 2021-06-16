@@ -10,22 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.pedroapp.noteApplication.AddCategory;
 import com.pedroapp.noteApplication.Category;
-import com.pedroapp.noteApplication.MainActivity;
 import com.pedroapp.noteApplication.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CategoryAdapter extends ArrayAdapter {
     private static final String TAG = "CategoryAdapter";
@@ -61,7 +55,7 @@ public class CategoryAdapter extends ArrayAdapter {
            public void onClick(View v) {
                Log.d("Category Clicked!!!", "onClick: "+loadedCategories.get(position));
                Intent i = new Intent(context, Category.class);
-               CategoryChosen.chosenCategory = loadedCategories.get(position);
+               ChosenOptions.chosenCategory = loadedCategories.get(position);
                context.startActivity(i);
            }
        });

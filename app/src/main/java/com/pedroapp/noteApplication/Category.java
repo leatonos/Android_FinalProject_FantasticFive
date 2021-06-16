@@ -4,14 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.chooser.ChooserTargetService;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pedroapp.noteApplication.database.Note;
 import com.pedroapp.noteApplication.database.NoteRoomDb;
-import com.pedroapp.noteApplication.util.CategoryChosen;
+import com.pedroapp.noteApplication.util.ChosenOptions;
 import com.pedroapp.noteApplication.util.DatabaseHelper;
 import com.pedroapp.noteApplication.util.NoteAdapter;
 
@@ -33,7 +32,7 @@ public class Category extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         pageTitle = findViewById(R.id.categoryTitle);
-        pageTitle.setText(CategoryChosen.chosenCategory);
+        pageTitle.setText(ChosenOptions.chosenCategory);
 
         //define listView id
         noteListView = findViewById(R.id.notes_lv);
@@ -59,8 +58,7 @@ public class Category extends AppCompatActivity {
 
     private void loadNotes(){
 
-        String chosenCat = CategoryChosen.chosenCategory;
-
+        String chosenCat = ChosenOptions.chosenCategory;
         noteList = noteRoomDb.noteDao().getAllNotes(chosenCat);
 
         NoteAdapter noteAdapter = new NoteAdapter(this,R.layout.note_list_item,noteList);
