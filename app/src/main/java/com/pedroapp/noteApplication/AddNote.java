@@ -367,7 +367,7 @@ public class AddNote extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        clearFields();
+        //clearFields();
     }
 
     private void clearFields() {
