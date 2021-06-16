@@ -20,6 +20,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -64,12 +67,16 @@ public class AddNote extends AppCompatActivity {
     DatabaseHelper sqLiteDatabase;
     private NoteRoomDb noteRoomDb;
 
+
+    //
+
     Spinner categorySelectSpin;
     SharedPreferences sharedpreferences;
     ArrayList<String> loadedCategories;
     ArrayAdapter<String> spinnerArrayAdapter;
     ImageView notePhoto;
 
+    //Variables to store the photoPath on the
     OutputStream outputStream;
     String notePhotoPath;
 
@@ -95,6 +102,18 @@ public class AddNote extends AppCompatActivity {
     // set initial variables for the location
     double noteLatitute;
     double noteLongitude;
+
+    //Audio Recording initial variables
+    private static final int RECORD_REQUEST_CODE = 101;
+    private static final int STORAGE_REQUEST_CODE = 102;
+
+    private static MediaRecorder mediaRecorder;
+    private static MediaPlayer mediaPlayer;
+
+    private static String audioFilePath;
+    private Button stopButton, playButton, recordButton;
+
+    private boolean isRecording = false;
 
 
     @Override
@@ -146,6 +165,8 @@ public class AddNote extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},4);
         }
 
+
+        audioSetup();
 
     }
 
