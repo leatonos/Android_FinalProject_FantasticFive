@@ -10,10 +10,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.pedroapp.noteApplication.util.ChosenOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    double noteLatitude;
+    double noteLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        noteLatitude = ChosenOptions.chosenNote.getLatitude();
+        noteLongitude = ChosenOptions.chosenNote.getLongitude();
+
     }
 
     @Override
@@ -30,8 +38,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("You were here"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng noteLocation = new LatLng(noteLatitude, noteLongitude);
+        mMap.addMarker(new MarkerOptions().position(noteLocation).title("You were here"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(noteLocation));
     }
 }

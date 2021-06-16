@@ -38,6 +38,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //Location
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
     // Room
     // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
