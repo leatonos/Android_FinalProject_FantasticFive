@@ -86,6 +86,40 @@
                 android:onClick="takePhoto"
                 android:text="Take Photo" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/record_Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:onClick="recordAudio"
+                    android:text="Record" />
+
+                <Button
+                    android:id="@+id/playBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:onClick="playAudio"
+                    android:text="Play" />
+
+                <Button
+                    android:id="@+id/stopBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:onClick="stopAudio"
+                    android:text="Stop" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/newNoteBtn"
                 android:layout_width="match_parent"

@@ -263,27 +263,46 @@ public class AddNote extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == REQUEST_CODE) {
-            for (String perm: permissions) {
-                if (!hasPermission(perm))
-                    permissionsRejected.add(perm);
-            }
+        switch (requestCode) {
+            //Case Location
+            case REQUEST_CODE:{
+                for (String perm: permissions) {
+                    if (!hasPermission(perm))
+                        permissionsRejected.add(perm);
+                }
 
-            if (permissionsRejected.size() > 0 ) {
-                if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
-                    new AlertDialog.Builder(AddNote.this)
-                            .setMessage("The location permission is mandatory")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), REQUEST_CODE);
+                if (permissionsRejected.size() > 0 ) {
+                    if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
+                        new AlertDialog.Builder(AddNote.this)
+                                .setMessage("The location permission is mandatory")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), REQUEST_CODE);
+                                        }
+
                                     }
-
-                                }
-                            }).setNegativeButton("Cancel", null)
-                            .create()
-                            .show();
+                                }).setNegativeButton("Cancel", null)
+                                .create()
+                                .show();
+                    }
+                }
+            }   //Case Recording
+                case RECORD_REQUEST_CODE: {
+                if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    recordButton.setEnabled(false);
+                    Toast.makeText(this, "Record Permission Required", Toast.LENGTH_LONG).show();
+                } else {
+                    requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_REQUEST_CODE);
+                }
+                return;
+            }
+            //Case saving data
+            case STORAGE_REQUEST_CODE: {
+                if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    recordButton.setEnabled(false);
+                    Toast.makeText(this, "External Storage Permission Required", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -368,6 +387,89 @@ public class AddNote extends AppCompatActivity {
     }
 
 
+    //Audio Setup
+
+    private void audioSetup() {
+
+        recordButton = findViewById(R.id.record_Btn);
+        playButton = findViewById(R.id.playBtn);
+        stopButton = findViewById(R.id.stopBtn);
+
+        if (!hasMicrophone()){
+            stopButton.setEnabled(false);
+            playButton.setEnabled(false);
+            recordButton.setEnabled(false);
+        } else {
+            playButton.setEnabled(false);
+            stopButton.setEnabled(false);
+        }
+        audioFilePath = this.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath() + "/"+System.currentTimeMillis()+".3gp";
+        requestPermission(Manifest.permission.RECORD_AUDIO,RECORD_REQUEST_CODE);
+    }
+
+    public void recordAudio(View view){
+        isRecording = true;
+        stopButton.setEnabled(true);
+        playButton.setEnabled(false);
+        recordButton.setEnabled(false);
+        try {
+            mediaRecorder = new MediaRecorder();
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mediaRecorder.setOutputFile(audioFilePath);
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            mediaRecorder.prepare();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        mediaRecorder.start();
+    }
+
+    public void stopAudio(View view){
+        stopButton.setEnabled(false);
+        playButton.setEnabled(true);
+
+        if (isRecording){
+            recordButton.setEnabled(false);
+            mediaRecorder.stop();
+            mediaRecorder.release();
+            mediaRecorder = null;
+            isRecording = false;
+        }
+        else {
+            mediaPlayer.release();
+            mediaPlayer = null;
+            recordButton.setEnabled(true);
+        }
+        Log.d("Stop", "stopAudio: "+ audioFilePath);
+    }
+
+    public void playAudio(View view) throws IOException {
+        playButton.setEnabled(false);
+        recordButton.setEnabled(false);
+        stopButton.setEnabled(true);
+
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setDataSource(audioFilePath);
+        mediaPlayer.prepare();
+        mediaPlayer.start();
+    }
+
+    protected boolean hasMicrophone(){
+        PackageManager packageManager = this.getPackageManager();
+        return packageManager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
+    }
+
+    protected void requestPermission(String permissionType, int requestcode){
+        int permission = ContextCompat.checkSelfPermission(this,permissionType);
+        if(permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{permissionType}, requestcode);
+        }
+    }
+
+
+
+    //Saving information on the database
     public void createNewNote(View view){
 
         String textNewTitle = newTitle.getText().toString().trim();
@@ -389,7 +491,7 @@ public class AddNote extends AppCompatActivity {
 
         savePhoto();
 
-        Note note = new Note(textNewTitle,textNewDescription,selectedCategory,notePhotoPath,"",currentDate,noteLatitute,noteLongitude);
+        Note note = new Note(textNewTitle,textNewDescription,selectedCategory,notePhotoPath,audioFilePath,currentDate,noteLatitute,noteLongitude);
         noteRoomDb.noteDao().insertNote(note);
 
         clearFields();
