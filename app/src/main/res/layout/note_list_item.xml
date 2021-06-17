@@ -26,6 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_baseline_edit_attributes_24"
+            android:drawableTint="#FDF8F8"
             android:text="Edit" />
 
         <Button
@@ -34,6 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_baseline_delete_24"
+            android:drawableTint="#F30F0F"
             android:text="Delete" />
     </LinearLayout>
 
