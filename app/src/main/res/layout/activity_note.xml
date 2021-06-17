@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".NoteActivity">
+    tools:context=".NoteActivity"
+    android:background="@drawable/bg3">
 
     <TextView
         android:id="@+id/NoteTitleFinal"
@@ -58,6 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:layout_weight="1"
+            android:drawableRight="@drawable/ic_baseline_play_circle_outline_24"
+            android:drawableTint="#FAF3F3"
             android:onClick="playAudioNote"
             android:text="Play" />
 
@@ -67,6 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:layout_weight="1"
+            android:drawableRight="@drawable/ic_baseline_stop_circle_24"
+            android:drawableTint="#F40808"
             android:onClick="stopAudioNote"
             android:text="Stop" />
     </LinearLayout>
@@ -82,6 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:drawableRight="@drawable/ic_baseline_location_on_24"
+            android:drawableTint="#0BF115"
             android:onClick="goToMap"
             android:text="See Location" />
 
