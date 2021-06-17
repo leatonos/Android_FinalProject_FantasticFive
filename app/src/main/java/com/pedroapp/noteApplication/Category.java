@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import com.pedroapp.noteApplication.util.ChosenOptions;
 import com.pedroapp.noteApplication.util.DatabaseHelper;
 import com.pedroapp.noteApplication.util.NoteAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Category extends AppCompatActivity {
@@ -25,6 +29,10 @@ public class Category extends AppCompatActivity {
     private NoteRoomDb noteRoomDb;
 
     List<Note> noteList;
+    List<Note> filteredList;
+    EditText searchText;
+
+    NoteAdapter noteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +49,32 @@ public class Category extends AppCompatActivity {
 
         loadNotes();
 
+//        searchText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//                if (noteAdapter != null){
+//
+//                    noteAdapter.getFilter().filter(s);
+//
+//                }
+//
+//            }
+//        });
+
     }
 
     public void goToAddNote(View view) {
-
         Intent i = new Intent(Category.this, AddNote.class);
         startActivity(i);
 
@@ -56,13 +86,19 @@ public class Category extends AppCompatActivity {
         loadNotes();
     }
 
-    private void loadNotes(){
+    private void loadNotes() {
 
         String chosenCat = ChosenOptions.chosenCategory;
         noteList = noteRoomDb.noteDao().getAllNotes(chosenCat);
 
-        NoteAdapter noteAdapter = new NoteAdapter(this,R.layout.note_list_item,noteList);
+
+        noteAdapter = new NoteAdapter(this, R.layout.note_list_item, noteList);
         noteListView.setAdapter(noteAdapter);
 
+
+
     }
+
+
+
 }

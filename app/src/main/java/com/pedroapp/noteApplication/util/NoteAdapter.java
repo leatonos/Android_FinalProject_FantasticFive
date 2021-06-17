@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,19 +23,21 @@ import androidx.annotation.Nullable;
 import com.pedroapp.noteApplication.NoteActivity;
 import com.pedroapp.noteApplication.R;
 import com.pedroapp.noteApplication.database.Note;
+import com.pedroapp.noteApplication.database.NoteDao;
 import com.pedroapp.noteApplication.database.NoteRoomDb;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class NoteAdapter extends ArrayAdapter {
+public class NoteAdapter extends ArrayAdapter implements Filterable {
 
     private static final String TAG = "NoteAdapter";
 
     Context context;
     int layoutRes;
-    List<Note> noteList;
+    List<Note> noteList = new ArrayList<>();
+    List<Note> noteListFiltered = new ArrayList<>();
     DatabaseHelper sqLiteDatabase;
     NoteRoomDb noteRoomDb;
 
@@ -41,6 +45,7 @@ public class NoteAdapter extends ArrayAdapter {
     public NoteAdapter(@NonNull Context context, int resource, List<Note> noteList){
         super(context, resource, noteList);
         this.noteList = noteList;
+        this.noteListFiltered = noteList;
         this.context = context;
         this.layoutRes = resource;
         noteRoomDb = NoteRoomDb.getInstance(context);
@@ -62,9 +67,7 @@ public class NoteAdapter extends ArrayAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ChosenOptions.chosenNote = note;
-
                 Intent i = new Intent(context, NoteActivity.class);
                 context.startActivity(i);
             }
@@ -166,16 +169,24 @@ public class NoteAdapter extends ArrayAdapter {
 
     @Override
     public int getCount() {
-        return noteList.size();
+     return noteList.size();
     }
+
+
+
 
     private void loadNotes() {
 
+        // check hre for filtered list
         String chosen = ChosenOptions.chosenCategory;
-
         noteList = noteRoomDb.noteDao().getAllNotes(chosen);
         notifyDataSetChanged();
 
     }
+
+
+
+
+
 
 }
