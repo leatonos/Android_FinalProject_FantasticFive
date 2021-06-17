@@ -121,7 +121,7 @@ public class AddNote extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
 
-        //Load the categories from the SharedPreferences
+        //Load the categories from the SharedPreference
         sharedpreferences = getSharedPreferences("Categories", Context.MODE_PRIVATE);
         String categories = sharedpreferences.getString("Cat_list", "My Dreams,My Memories,Events");
         loadedCategories = new ArrayList<String>(Arrays.asList(categories.split(",")));
