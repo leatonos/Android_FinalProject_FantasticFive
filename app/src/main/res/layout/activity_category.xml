@@ -21,17 +21,31 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <SearchView
-            android:id="@+id/searchbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<!--        <SearchView-->
+<!--            android:id="@+id/searchbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
 
-        </SearchView>
+<!--        </SearchView>-->
+
+        <EditText
+            android:id="@+id/searchText"
+            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/background_search"
+            android:hint="Search Note....."
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+        >
+
+        </EditText>
+
 
         <ListView
             android:id="@+id/notes_lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_weight="0.8">
 
         </ListView>
