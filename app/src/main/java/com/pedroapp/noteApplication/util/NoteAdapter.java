@@ -172,7 +172,44 @@ public class NoteAdapter extends ArrayAdapter implements Filterable {
      return noteList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    noteListFiltered = noteList;
+                } else {
+                    List<Note> filteredList = new ArrayList<>();
+                    for (Note row : noteList) {
 
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase()) || row.getCategory().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    noteListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = noteListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                noteListFiltered = (List<Note>) filterResults.values;
+
+                // refresh the list with filtered data
+                Log.e( "publishResults: ","called" );
+//                Log.e( "publishResults: ",new GsonBuilder().create().toJson(contactListFiltered));
+                notifyDataSetChanged();
+            }
+        };
+    }
 
 
     private void loadNotes() {
