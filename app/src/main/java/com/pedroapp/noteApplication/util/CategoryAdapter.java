@@ -104,6 +104,7 @@ public class CategoryAdapter extends ArrayAdapter {
             }
         });
         Log.d(TAG, "getView: " + getCount());
+        Log.d(TAG, "getView: " + getCount());
         return v;
     }
 

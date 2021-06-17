@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         listViewCategories.setAdapter(categoryAdapter);
 
+        Log.d("TESTING", categories);
+
     }
 
     public void goToNewCategory(View view) {

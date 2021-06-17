@@ -67,9 +67,6 @@ public class AddNote extends AppCompatActivity {
     DatabaseHelper sqLiteDatabase;
     private NoteRoomDb noteRoomDb;
 
-
-    //
-
     Spinner categorySelectSpin;
     SharedPreferences sharedpreferences;
     ArrayList<String> loadedCategories;
