@@ -72,6 +72,7 @@ public class AddNote extends AppCompatActivity {
     ArrayList<String> loadedCategories;
     ArrayAdapter<String> spinnerArrayAdapter;
     ImageView notePhoto;
+    boolean tookPhoto;
 
     //Variables to store the photoPath on the
     OutputStream outputStream;
@@ -162,7 +163,8 @@ public class AddNote extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},4);
         }
 
-
+        //Flag for the photo
+        tookPhoto = false;
         audioSetup();
 
     }
@@ -330,7 +332,6 @@ public class AddNote extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_IMAGE_CAPTURE){
@@ -338,8 +339,10 @@ public class AddNote extends AppCompatActivity {
             Bitmap imageTaken = (Bitmap) extras.get("data");
             notePhoto.setVisibility(View.VISIBLE);
             notePhoto.setImageBitmap(imageTaken);
+            tookPhoto = true;
         }else{
             notePhoto.setVisibility(View.GONE);
+            tookPhoto = false;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -383,9 +386,7 @@ public class AddNote extends AppCompatActivity {
 
     }
 
-
     //Audio Setup
-
     private void audioSetup() {
 
         recordButton = findViewById(R.id.record_Btn);
@@ -486,8 +487,13 @@ public class AddNote extends AppCompatActivity {
             return;
         }
 
-        if(notePhotoPath == null){ notePhotoPath = "";}
-        else {savePhoto();}
+          if(tookPhoto){
+              savePhoto();
+          }else{
+              notePhotoPath = "";
+          }
+
+
         if(audioFilePath == null){ audioFilePath = "";}
 
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());

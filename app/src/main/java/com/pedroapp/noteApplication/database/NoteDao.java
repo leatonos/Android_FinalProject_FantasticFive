@@ -27,5 +27,8 @@ public interface NoteDao {
     @Query("SELECT * FROM note WHERE category =:chosenCategory  ORDER BY title")
     List<Note> getAllNotes(String chosenCategory);
 
+    @Query("SELECT * FROM note WHERE category =:chosenCategory  ORDER BY time DESC")
+    List<Note> getAllNotesByDate(String chosenCategory);
+
 
 }

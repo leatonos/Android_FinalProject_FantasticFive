@@ -84,13 +84,23 @@ public class DatabaseHelper  extends SQLiteOpenHelper{
         }
 
         /**
-         * Query database - select all the employees
+         * Query database - select all the notes
          * @return cursor
          * */
         public Cursor getAllNotes() {
             // we need a readable instance of database
             SQLiteDatabase sqLiteDatabase = getReadableDatabase();
             return sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        }
+
+        /**
+         * Query database - select all the notes
+         * @return cursor
+         * */
+        public Cursor getAllNotesByDate() {
+            // we need a readable instance of database
+            SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+            return sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME + "ORDER BY" + COLUMN_TIME + "DESC", null);
         }
 
         /**

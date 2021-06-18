@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,6 +34,9 @@ public class Category extends AppCompatActivity {
     EditText searchText;
 
     NoteAdapter noteAdapter;
+    boolean sortingByDate;
+
+    Button sortBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class Category extends AppCompatActivity {
 
         pageTitle = findViewById(R.id.categoryTitle);
         pageTitle.setText(ChosenOptions.chosenCategory);
+        sortBy = findViewById(R.id.sortingBtn);
 
         //define listView id
         noteListView = findViewById(R.id.notes_lv);
@@ -48,6 +53,8 @@ public class Category extends AppCompatActivity {
         noteRoomDb = NoteRoomDb.getInstance(this);
 
         loadNotes();
+
+        sortingByDate = false;
 
 //        searchText.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -70,7 +77,7 @@ public class Category extends AppCompatActivity {
 //                }
 //
 //            }
-//        });
+//
 
     }
 
@@ -84,6 +91,7 @@ public class Category extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadNotes();
+        //sortBy.setText("Sort by date");
     }
 
     private void loadNotes() {
@@ -95,10 +103,25 @@ public class Category extends AppCompatActivity {
         noteAdapter = new NoteAdapter(this, R.layout.note_list_item, noteList);
         noteListView.setAdapter(noteAdapter);
 
-
-
     }
 
+    public void sortBy(View view) {
 
+        if(!sortingByDate){
+            String chosenCat = ChosenOptions.chosenCategory;
+            noteList = noteRoomDb.noteDao().getAllNotesByDate(chosenCat);
 
+            noteAdapter = new NoteAdapter(this, R.layout.note_list_item, noteList);
+            noteListView.setAdapter(noteAdapter);
+
+            sortingByDate = true;
+
+            sortBy.setText("Sort by title");
+        }else{
+            sortBy.setText("Sort by date");
+            sortingByDate = false;
+            loadNotes();
+        }
+
+    }
 }
