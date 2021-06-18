@@ -72,7 +72,7 @@ public class NoteActivity extends AppCompatActivity {
         notePhoto.setImageBitmap(bitmap);
 
         //checking for empty collums
-        if(ChosenOptions.chosenNote.getAudio() == ""){
+        if(ChosenOptions.chosenNote.getAudio().equals("")){
             Log.d("TESTING", "NO AUDIO FOUND");
             playBtn.setVisibility(View.GONE);
             stopBtn.setVisibility(View.GONE);

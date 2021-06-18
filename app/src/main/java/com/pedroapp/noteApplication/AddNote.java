@@ -498,6 +498,10 @@ public class AddNote extends AppCompatActivity {
         noteRoomDb.noteDao().insertNote(note);
 
         clearFields();
+
+        Intent i = new Intent(AddNote.this, Category.class);
+        startActivity(i);
+
     }
 
     @Override
