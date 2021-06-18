@@ -117,7 +117,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper{
         }
 
         /**
-         * Delete employee from database table
+         * Delete Note from database table
          * @param id
          * @return true if is successful
          * */
@@ -128,6 +128,20 @@ public class DatabaseHelper  extends SQLiteOpenHelper{
                     COLUMN_ID + "=?",
                     new String[]{String.valueOf(id)}) > 0;
         }
+
+
+    /**
+     * Delete All Notes from a Category in the database table
+     * @param category
+     * @return true if is successful
+     * */
+    public boolean deleteNotesFromCategory(int id) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        // the delete method associated to the SQLite database instance returns the number of rows affected
+        return sqLiteDatabase.delete(TABLE_NAME,
+                COLUMN_CATEGORY + "=?",
+                new String[]{String.valueOf(id)}) > 0;
+    }
 
 
 

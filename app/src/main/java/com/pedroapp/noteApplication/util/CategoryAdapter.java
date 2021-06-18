@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import com.pedroapp.noteApplication.Category;
 import com.pedroapp.noteApplication.R;
+import com.pedroapp.noteApplication.database.NoteRoomDb;
 
 import java.util.ArrayList;
 
@@ -27,8 +28,13 @@ public class CategoryAdapter extends ArrayAdapter {
     Context context;
     int layoutRes;
 
+    //Categories
     SharedPreferences sharedpreferences;
     ArrayList<String> loadedCategories;
+
+    //Notes database
+    DatabaseHelper sqLiteDatabase;
+    NoteRoomDb noteRoomDb;
 
 
     public CategoryAdapter(@NonNull Context context, int resource, ArrayList<String> loadedCategories) {
@@ -37,6 +43,7 @@ public class CategoryAdapter extends ArrayAdapter {
         this.loadedCategories = loadedCategories;
         this.context = context;
         this.layoutRes = resource;
+        noteRoomDb = NoteRoomDb.getInstance(context);
 
     }
 
@@ -71,6 +78,8 @@ public class CategoryAdapter extends ArrayAdapter {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        noteRoomDb.noteDao().deleteNotesFromCategory(loadedCategories.get(position));
 
                         loadedCategories.remove(position);
                         //String finalresult = loadedCategories.toString();

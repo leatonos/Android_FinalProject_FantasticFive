@@ -28,7 +28,7 @@ public class NoteActivity extends AppCompatActivity {
 
     TextView TVtitle,TVdate,TVFinalDescription,TVnoteAddress;
     ImageView notePhoto;
-    Button playBtn, stopBtn;
+    Button playBtn, stopBtn, locationBtn;
 
     //variables for the Audio
     private static MediaPlayer mediaPlayer;
@@ -47,6 +47,7 @@ public class NoteActivity extends AppCompatActivity {
         notePhoto = findViewById(R.id.noteImageView);
         playBtn = findViewById(R.id.playbtnNote);
         stopBtn = findViewById(R.id.stopBtnNote);
+        locationBtn = findViewById(R.id.locationBtn);
 
         double latitude = ChosenOptions.chosenNote.getLatitude();
         double longitude = ChosenOptions.chosenNote.getLongitude();
@@ -56,8 +57,6 @@ public class NoteActivity extends AppCompatActivity {
         String noteDescription = ChosenOptions.chosenNote.getDescription();
         String notePhotoPath = ChosenOptions.chosenNote.getImage();
         audioFilePath = ChosenOptions.chosenNote.getAudio();
-
-
 
         //set Address on the TextView
         getAddress(latitude,longitude);
@@ -71,6 +70,17 @@ public class NoteActivity extends AppCompatActivity {
         //finds the image on the InternalStorage and put on the ImageView
         Bitmap bitmap = BitmapFactory.decodeFile(notePhotoPath);
         notePhoto.setImageBitmap(bitmap);
+
+        //checking for empty collums
+        if(ChosenOptions.chosenNote.getAudio() == ""){
+            Log.d("TESTING", "NO AUDIO FOUND");
+            playBtn.setVisibility(View.GONE);
+            stopBtn.setVisibility(View.GONE);
+        }
+
+        if(ChosenOptions.chosenNote.getLatitude() == 0.0 && ChosenOptions.chosenNote.getLatitude() == 0.0){
+            locationBtn.setVisibility(View.GONE);
+        }
 
 
     }

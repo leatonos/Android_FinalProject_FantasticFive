@@ -214,7 +214,7 @@ public class NoteAdapter extends ArrayAdapter implements Filterable {
 
     private void loadNotes() {
 
-        // check hre for filtered list
+        // check here for filtered list
         String chosen = ChosenOptions.chosenCategory;
         noteList = noteRoomDb.noteDao().getAllNotes(chosen);
         notifyDataSetChanged();

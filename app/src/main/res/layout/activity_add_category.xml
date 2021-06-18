@@ -42,13 +42,4 @@
         android:onClick="createNewCategory"
         android:text="Create" />
 
-    <Button
-        android:id="@+id/deleteAll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:drawableLeft="@drawable/ic_baseline_delete_24"
-        android:drawableTint="#F61E0E"
-        android:onClick="deleteAll"
-        android:text="Delete All categories" />
 </LinearLayout>

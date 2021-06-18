@@ -400,11 +400,13 @@ public class AddNote extends AppCompatActivity {
             playButton.setEnabled(false);
             stopButton.setEnabled(false);
         }
-        audioFilePath = this.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath() + "/"+System.currentTimeMillis()+".3gp";
         requestPermission(Manifest.permission.RECORD_AUDIO,RECORD_REQUEST_CODE);
     }
 
     public void recordAudio(View view){
+
+        audioFilePath = this.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath() + "/"+System.currentTimeMillis()+".3gp";
+
         isRecording = true;
         stopButton.setEnabled(true);
         playButton.setEnabled(false);
@@ -484,9 +486,13 @@ public class AddNote extends AppCompatActivity {
             return;
         }
 
+        if(notePhotoPath == null){ notePhotoPath = "";}
+        else {savePhoto();}
+        if(audioFilePath == null){ audioFilePath = "";}
+
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
-        savePhoto();
+
 
         Note note = new Note(textNewTitle,textNewDescription,selectedCategory,notePhotoPath,audioFilePath,currentDate,noteLatitute,noteLongitude);
         noteRoomDb.noteDao().insertNote(note);
